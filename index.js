@@ -9,7 +9,7 @@ import { randomUUID } from 'node:crypto'
 import { parseIco, validateIco, generatePackFromImage, matchPack, sha256 } from './lib/icon.js'
 
 /**
- * dsh-app-icon 的宿主半边。
+ * dsh-icon-changer 的宿主半边。
  *
  * 它只做三件事：
  *  1. 看：读出 exe 里现在的图标、和内置的默认图标比对，告诉面板“现在用的是哪套”；
@@ -40,7 +40,7 @@ const PACK_DEFS = [
 
 function log(...args) {
   try {
-    console.log('[dsh-app-icon]', ...args)
+    console.log('[dsh-icon-changer]', ...args)
   } catch {}
 }
 
@@ -157,7 +157,7 @@ export function apply(ctx, config = {}) {
   const installDir = path.dirname(process.execPath)
   const exePath = process.execPath
   const resourcesDir = path.join(installDir, 'resources')
-  const dataDir = path.resolve(config.dataDir || path.join(DSH_HOME, 'dsh-app-icon'))
+  const dataDir = path.resolve(config.dataDir || path.join(DSH_HOME, 'dsh-icon-changer'))
   const stateFile = path.join(dataDir, 'state.json')
   const logsDir = path.join(dataDir, 'logs')
   const stagingDir = path.join(dataDir, 'staging')
@@ -835,7 +835,34 @@ export function apply(ctx, config = {}) {
     return { ok: true, file, lines, result: state.last }
   }
 
+  /**
+   * DSH 的统一准入：返回 403 / 401 表示拒绝，undefined 表示放行。
+   *
+   * webServer.register 挂的前缀路由不在 DSH 的准入覆盖内，必须自己先过这一步
+   * （维护者 fkysly 在 awesome-dsh-plugin#15555 指出过同一件事）。
+   * connection 服务异步就位，取不到时降级到下面的本机来源判断。
+   */
+  const admitRequest = (req) => {
+    let connection
+    try {
+      connection = typeof ctx.get === 'function' ? ctx.get('connection') : undefined
+    } catch {
+      connection = undefined
+    }
+    if (!connection || typeof connection.requestRejection !== 'function') return undefined
+    try {
+      return connection.requestRejection(req)
+    } catch (error) {
+      log('DSH 准入检查出错，按拒绝处理：', String(error))
+      return 403
+    }
+  }
+
   async function handle(req, res) {
+    const rejected = admitRequest(req)
+    if (rejected !== undefined) {
+      return fail(res, rejected, rejected === 403 ? '请求来源不可信' : '请求未经 DSH 认证')
+    }
     if (!isLocalRequest(req)) return fail(res, 403, '只接受本机页面')
     const url = new URL(req.url || '/', 'http://localhost')
     const sub = url.pathname.replace(/^\/dsh-icon\/?/, '')
@@ -892,7 +919,7 @@ export function apply(ctx, config = {}) {
           }
         },
       }),
-    'dsh-app-icon routes',
+    'dsh-icon-changer routes',
   )
 
   // 预热一次：面板打开时不用干等 PowerShell 编译。

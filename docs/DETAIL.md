@@ -43,7 +43,7 @@ exe 是用 Win32 的 `BeginUpdateResource` / `UpdateResource` / `EndUpdateResour
 - 任何一步对不上就不换 resources，并整只还原；
 - 重开 DSH 后 60 秒没起来，也会整只还原再拉起来。
 
-数据目录：`%DSH_HOME%\dsh-app-icon`（一般是 `C:\Users\<你>\.dsh\dsh-app-icon` 或 DSH 自己的 home），日志在 `logs\`。
+数据目录：`%DSH_HOME%\dsh-icon-changer`（一般是 `C:\Users\<你>\.dsh\dsh-icon-changer` 或 DSH 自己的 home），日志在 `logs\`。
 
 ## 踩过的坑
 
@@ -69,10 +69,10 @@ exe 是用 Win32 的 `BeginUpdateResource` / `UpdateResource` / `EndUpdateResour
 - 后台不是直接 `spawn('powershell.exe', ...)`：Node 的 `detached: true` 在 Windows 会带 `DETACHED_PROCESS`，powershell 拿不到控制台，秒退（exit 0，日志都不写）。现在的做法是写一个 UTF-16LE 的 `launch.vbs`，用 `wscript` 当跳板，VBS 里 `sh.Run "... powershell.exe ...", 0, False` 以隐藏窗口拉起。wscript 是 GUI 进程、没有控制台，powershell 才能活得比 DSH 久。
 - `assets/helper/apply.ps1` 必须存成 **UTF-8 with BOM**。PowerShell 5.1 读无 BOM 的 .ps1 会按 GBK 解，中文注释/字符串一乱，整个脚本直接解析失败（报“缺少 }”之类），而且退出码是 1、什么都不写。改完用 Parser 验一遍。
 - 判断“现在用的是哪套”靠的是 exe 图标逐张 SHA-256 对比，不是文件时间或配置。DSH 升级换 exe 后会自动不在内置的几套里，这是对的。
-- 排版/字号/按钮状态/特别告知的规则见 [LAYOUT.md](LAYOUT.md)；世界归档在 `G:\DSH-home\worlds\default\room\爸爸的工作室\dsh-app-icon_排版规则.md`。
+- 排版/字号/按钮状态/特别告知的规则见 `DSH_HOME\worlds\default\room\爸爸的工作室\_规范\插件规范.md`（在 DSH 家里，不随插件发布）。
 
 ## 应急
 
 - 面板里「细节和应急」→ 看后台日志，每一步都有时间。
-- 手动还原：把 `%DSH_HOME%\dsh-app-icon\backup\exe-last-good.exe` 覆盖回 `DeepSeek Harness.exe`，再把最近一份 `backups\icons\<时间>\` 里的 `icon.png`、`tray.ico` 拷回 `resources\`。
+- 手动还原：把 `%DSH_HOME%\dsh-icon-changer\backup\exe-last-good.exe` 覆盖回 `DeepSeek Harness.exe`，再把最近一份 `backups\icons\<时间>\` 里的 `icon.png`、`tray.ico` 拷回 `resources\`。
 - 默认图标来自 DeepSeek Harness 官方安装包，仅用于还原官方外观；版权归 DeepSeek。插件自己的图标是另画的。

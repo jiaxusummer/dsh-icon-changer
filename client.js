@@ -1,10 +1,10 @@
 /**
- * dsh-app-icon — 浏览器半侧：设置里的「应用图标」。
+ * dsh-icon-changer — 浏览器半侧：设置里的「应用图标」。
  * 模块 id 必须等于 bundle 行名。
  */
 ;(function () {
   window.__ModuleLoader__.load({
-    id: 'dsh-app-icon',
+    id: 'dsh-icon-changer',
     factory: function (require) {
       var React = require('react')
       var h = React.createElement
@@ -74,7 +74,7 @@
       }
 
       var CSS = [
-        '.dx{--dx-radius:12px;--dx-title-size:15px;--dx-desc-size:12px;display:flex;flex-direction:column;gap:12px;max-width:780px;padding:2px 2px 28px;color:var(--dsw-alias-label-primary);font-family:"Microsoft YaHei","微软雅黑","PingFang SC","Segoe UI",sans-serif;font-size:13px;line-height:1.55}',
+        '.dx{--dx-radius:12px;--dx-title-size:15px;--dx-desc-size:12px;display:flex;flex-direction:column;gap:10px;max-width:780px;padding:2px 2px 28px;color:var(--dsw-alias-label-primary);font-family:"Microsoft YaHei","微软雅黑","PingFang SC","Segoe UI",sans-serif;font-size:13px;line-height:1.55}',
         '.dx a{color:inherit}',
         '.dx .dx-title{margin:0;font-size:var(--dx-title-size);font-weight:600;letter-spacing:.2px}',
         '.dx .dx-sub{margin-top:4px;color:var(--dsw-alias-label-secondary);font-size:12px}',
@@ -83,7 +83,7 @@
         '.dx .dx-card.dx-col{display:flex;flex-direction:column}',
         '.dx .dx-strong{font-size:var(--dx-title-size);font-weight:600;color:var(--dsw-alias-label-primary)}',
         '.dx .dx-desc{font-size:var(--dx-desc-size);color:var(--dsw-alias-label-secondary);opacity:.88}',
-        '.dx .dx-two{display:flex;gap:12px;align-items:stretch}',
+        '.dx .dx-two{display:flex;gap:10px;align-items:stretch}',
         '.dx .dx-pane-left{flex:7 1 0;min-width:0;padding:0;display:flex;flex-direction:column}',
         '.dx .dx-pane-right{flex:3 1 0;min-width:0;padding:8px;display:flex;flex-direction:column}',
         '.dx .dx-half{flex:1 1 0;min-height:93px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}',
@@ -129,7 +129,7 @@
         '.dx .dx-banner.warn{border-color:var(--dsw-alias-state-warn-primary)}',
         '.dx .dx-steps{margin:8px 0 0;padding-left:20px}',
         '.dx .dx-steps li{margin:3px 0}',
-        '.dx .dx-details{margin-top:2px}',
+        '.dx .dx-details{margin-top:0}',
         '.dx .dx-details[open]{background:var(--dsw-alias-bg-layer-1);border:1px solid var(--dsw-alias-border-l1);border-radius:var(--dx-radius);padding:8px}',
         '.dx .dx-details summary{cursor:pointer;color:var(--dsw-alias-label-primary);font-size:var(--dx-title-size);font-weight:600;list-style:none;display:flex;align-items:center;gap:6px}',
         '.dx .dx-details summary::-webkit-details-marker{display:none}',
@@ -727,7 +727,7 @@
       Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' })
       exports.apply = function (ctx) {
         ctx.slots.inject('settings.section', function () {
-          return ctx.slots.register({ name: 'settings.section', id: 'dsh-app-icon', order: 34, label: '应用图标' }, function () {
+          return ctx.slots.register({ name: 'settings.section', id: 'dsh-icon-changer', order: 34, label: '应用图标' }, function () {
             return h(App)
           })
         })

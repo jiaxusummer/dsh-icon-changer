@@ -1,5 +1,5 @@
 ﻿# ============================================================
-#  dsh-app-icon 的后台助手
+#  dsh-icon-changer 的后台助手
 #  由 Host 插件在“DSH 退出之后”拉起；自己等进程退出、备份、改图标、验证、重开。
 #  所有参数都从 -Request 指向的 JSON 读，避免中文路径在命令行里被拆坏。
 #  用法（插件自己会这样调）：
@@ -477,7 +477,7 @@ $backupMadeThisRun = $false
 $snapshotIco = $null
 $snap = $null
 try {
-    Say "=== dsh-app-icon · $Mode · pack=$PackName ==="
+    Say "=== dsh-icon-changer · $Mode · pack=$PackName ==="
     Say "exe=$Exe"
     New-Item -ItemType Directory -Force -Path $SnapshotDir | Out-Null
 

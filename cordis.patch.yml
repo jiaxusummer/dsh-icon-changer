@@ -1,7 +1,7 @@
-# dsh-app-icon 的挂载声明。id 必须和包名一致，patch 覆盖时按它定位。
+# dsh-icon-changer 的挂载声明。id 必须和包名一致，patch 覆盖时按它定位。
 - insert:
-    - id: dsh-app-icon
-      name: dsh-app-icon
+    - id: dsh-icon-changer
+      name: dsh-icon-changer
       config:
         fullExeBackup: true
         waitSeconds: 3600
